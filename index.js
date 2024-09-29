@@ -33,7 +33,7 @@ function game(selectedCol, selectedRow) {
     if (first.emoji !== second.emoji) {
       flipCard(first.coordinates, second.coordinates);
     }
-    clearPairs();
+    pairs.splice(0, 2);
   }
 
   if (pairs.length === 2) {
