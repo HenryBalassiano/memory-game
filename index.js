@@ -28,13 +28,6 @@ function game(selectedCol, selectedRow) {
     cardsDown[selectedCol][selectedRow] = emojis[selectedCol][selectedRow];
     screenController();
   }
-  if (pairs.length > 2) {
-    const [first, second] = pairs;
-    if (first.emoji !== second.emoji) {
-      flipCard(first.coordinates, second.coordinates);
-    }
-    pairs.splice(0, 2);
-  }
 
   if (pairs.length === 2) {
     const isPairs = pairs[0].emoji === pairs[1].emoji;
