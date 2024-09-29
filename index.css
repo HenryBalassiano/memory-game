@@ -1,0 +1,14 @@
+#gameboard {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+#container {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+.game button {
+  font-size: 75px;
+  height: 130px;
+  width: 130px;
+}
