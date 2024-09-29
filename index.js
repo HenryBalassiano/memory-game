@@ -7,7 +7,6 @@ const emojis = [
 
 let pairs = [];
 let cardsDown = emojis.map((item) => item.map(() => 0));
-
 function resetGame() {
   emojis.sort(() => 0.5 - Math.random());
   cardsDown = emojis.map((item) => item.map(() => 0));
@@ -18,17 +17,28 @@ function game(selectedCol, selectedRow) {
   function clearPairs() {
     pairs = [];
   }
+
   if (cardsDown[selectedCol][selectedRow] !== 0) {
     return cardsDown;
   } else {
-    pairs.push(emojis[selectedCol][selectedRow]);
+    pairs.push({
+      emoji: emojis[selectedCol][selectedRow],
+      coordinates: [selectedCol, selectedRow],
+    });
     cardsDown[selectedCol][selectedRow] = emojis[selectedCol][selectedRow];
     screenController();
   }
+  if (pairs.length > 2) {
+    const [first, second] = pairs;
+    if (first.emoji !== second.emoji) {
+      flipCard(first.coordinates, second.coordinates);
+    }
+    clearPairs();
+  }
 
   if (pairs.length === 2) {
-    const isPairs = pairs[0] === pairs[1];
-
+    const isPairs = pairs[0].emoji === pairs[1].emoji;
+    console.log(pairs);
     if (isPairs) {
       clearPairs();
       if (checkWin()) {
@@ -36,27 +46,23 @@ function game(selectedCol, selectedRow) {
       }
       return cardsDown;
     } else {
-      flipCard();
+      flipCard(pairs[0].coordinates, pairs[1].coordinates);
       clearPairs();
     }
   }
   return cardsDown;
 }
 
-function flipCard() {
-  for (let i = 0; i < cardsDown.length; i++) {
-    for (let j = 0; j < cardsDown.length; j++) {
-      if (cardsDown[i][j] === pairs[0] || cardsDown[i][j] === pairs[1]) {
-        cardsDown[i][j] = 0;
+function flipCard(coord1, coord2) {
+  const [row1, col1] = coord1;
+  const [row2, col2] = coord2;
 
-        setTimeout(() => {
-          screenController();
-        }, 1000);
-      }
+  cardsDown[row1][col1] = 0;
+  cardsDown[row2][col2] = 0;
 
-      console.log(cardsDown, pairs[2], "unmatched");
-    }
-  }
+  setTimeout(() => {
+    screenController();
+  }, 1000);
 }
 
 function checkWin() {
